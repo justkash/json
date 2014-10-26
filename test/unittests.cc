@@ -9,6 +9,7 @@
 #include "../json/jsonstring.h"
 #include "../json/jsonnumber.h"
 #include "../json/jsonboolean.h"
+#include "../json/jsonnull.h"
 
 using namespace std;
 
@@ -135,6 +136,17 @@ void test_stringify_false_JsonBoolean() {
     assert(temp.stringify() == "false");
 }
 
+// JsonNull
+void test_string_constructor_JsonNull() {
+    JsonNull temp("null");
+    assert(temp.stringify() == "null");
+}
+
+void test_empty_constructor_JsonNull() {
+    JsonNull temp;
+    assert(temp.stringify() == "null");
+}
+
 int main() {
     clock_t start, stop;
     start = clock();
@@ -167,6 +179,10 @@ int main() {
         test_bool_constructor_false_JsonBoolean();
         test_stringify_true_JsonBoolean();
         test_stringify_false_JsonBoolean();
+
+        // JsonNull
+        test_string_constructor_JsonNull();
+        test_empty_constructor_JsonNull();
 
         puts("Tests successfully completed.");
     }

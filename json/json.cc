@@ -18,3 +18,14 @@ const char* Json::find_next_non_space_char(const char* str) {
     while (isspace(*ptr) && *ptr != '\0') ++ptr;
     return ptr;
 }
+
+bool Json::check_contains(const char* big_str, const char* small_str) {
+    const char* small_ptr = small_str;
+    const char* big_ptr = big_str;
+    while (*small_ptr != '\0') {
+        if (*small_ptr != *big_ptr) return false;
+        ++small_ptr;
+        ++big_ptr;
+    }
+    return true;
+}

@@ -17,6 +17,7 @@ class Json {
     protected:
     static const char* find_next_char(const char*, const char);
     static const char* find_next_non_space_char(const char*);
+    static bool check_contains(const char*, const char*);
 };
 
 #endif

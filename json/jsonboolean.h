@@ -23,8 +23,6 @@ class JsonBoolean : Json {
     private:
         bool is_true_;
         size_t byte_size_;
-
-        bool check_contains(const char*, const char*);
 };
 
 #endif
