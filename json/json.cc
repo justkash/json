@@ -4,7 +4,6 @@
  */
 
 #include "json.h"
-#include "jsonstring.h"
 
 #include <ctype.h>
 

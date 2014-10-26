@@ -8,6 +8,7 @@
 #include "../json/json.h"
 #include "../json/jsonstring.h"
 #include "../json/jsonnumber.h"
+#include "../json/jsonboolean.h"
 
 using namespace std;
 
@@ -102,6 +103,38 @@ void test_assignment_JsonNumber() {
     assert(temp2.get_int() == 42);
 }
 
+// JsonBoolean
+void test_string_constructor_true_JsonBoolean() {
+    JsonBoolean temp("true");
+    assert(temp.get_bool() == true);
+}
+
+void test_string_constructor_false_JsonBoolean() {
+    string a = "false";
+    JsonBoolean temp(a);
+    assert(temp.get_bool() == false);
+}
+
+void test_bool_constructor_true_JsonBoolean() {
+    JsonBoolean temp(true);
+    assert(temp.get_bool() == true);
+}
+
+void test_bool_constructor_false_JsonBoolean() {
+    JsonBoolean temp(false);
+    assert(temp.get_bool() == false);
+}
+
+void test_stringify_true_JsonBoolean() {
+    JsonBoolean temp("true");
+    assert(temp.stringify() == "true");
+}
+
+void test_stringify_false_JsonBoolean() {
+    JsonBoolean temp("false");
+    assert(temp.stringify() == "false");
+}
+
 int main() {
     clock_t start, stop;
     start = clock();
@@ -127,7 +160,15 @@ int main() {
         test_copy_JsonNumber();
         test_assignment_JsonNumber();
 
-        puts("Tests complete.");
+        // JsonBoolean
+        test_string_constructor_true_JsonBoolean();
+        test_string_constructor_false_JsonBoolean();
+        test_bool_constructor_true_JsonBoolean();
+        test_bool_constructor_false_JsonBoolean();
+        test_stringify_true_JsonBoolean();
+        test_stringify_false_JsonBoolean();
+
+        puts("Tests successfully completed.");
     }
     catch (const char* exception) {
         printf("Test failed with exception:\n%s\n", exception);
