@@ -5,12 +5,12 @@
 #include <iostream>
 #include <assert.h>
 
-#include "../json/json.h"
-#include "../json/jsonstring.h"
-#include "../json/jsonnumber.h"
-#include "../json/jsonboolean.h"
-#include "../json/jsonnull.h"
-#include "../json/jsonarray.h"
+#include "../json/json.hpp"
+#include "../json/jsonstring.hpp"
+#include "../json/jsonnumber.hpp"
+#include "../json/jsonboolean.hpp"
+#include "../json/jsonnull.hpp"
+#include "../json/jsonarray.hpp"
 
 using namespace std;
 

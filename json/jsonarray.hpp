@@ -3,18 +3,18 @@
  * Last Updated: Oct/26/2014
  */
 
-#ifndef JSONARRAY_H
-#define JSONARRAY_H
+#ifndef JSONARRAY_HPP
+#define JSONARRAY_HPP
 
-#include "json.h"
+#include "json.hpp"
 
 #include <string>
 
-#include "jsonstring.h"
-#include "jsonnumber.h"
-#include "jsonboolean.h"
-#include "jsonnull.h"
-//#include "jsonobject.h"
+#include "jsonstring.hpp"
+#include "jsonnumber.hpp"
+#include "jsonboolean.hpp"
+#include "jsonnull.hpp"
+//#include "jsonobject.hpp"
 
 class JsonArray : public Json {
     public:

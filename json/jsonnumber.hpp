@@ -3,13 +3,13 @@
  * Last Updated: Oct/25/2014
  */
 
-#ifndef JSONNUMBER_H
-#define JSONNUMBER_H
+#ifndef JSONNUMBER_HPP
+#define JSONNUMBER_HPP
 
 #include <string>
 #include <stddef.h>
 
-#include "json.h"
+#include "json.hpp"
 
 class JsonNumber : public Json {
     public:

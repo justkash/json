@@ -3,13 +3,13 @@
  * Last Updated: Oct/25/2014
  */
 
-#ifndef JSONBOOLEAN_H
-#define JSONBOOLEAN_H
+#ifndef JSONBOOLEAN_HPP
+#define JSONBOOLEAN_HPP
 
 #include <string>
 #include <stddef.h>
 
-#include "json.h"
+#include "json.hpp"
 
 class JsonBoolean : public Json {
     public:

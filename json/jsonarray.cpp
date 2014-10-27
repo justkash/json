@@ -2,7 +2,7 @@
  * Last Updated: Oct/26/2014
  */
 
-#include "jsonarray.h"
+#include "jsonarray.hpp"
 
 #include "string.h"
 #include "stdlib.h"

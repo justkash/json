@@ -3,7 +3,7 @@
  * Last Updated: Oct/25/2014
  */
 
-#include "jsonnull.h"
+#include "jsonnull.hpp"
 
 JsonNull::JsonNull(const std::string& str) {
     const char* c_str = str.c_str();

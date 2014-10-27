@@ -3,7 +3,7 @@
  * Last Updated: Oct/24/2014
  */
 
-#include "jsonstring.h"
+#include "jsonstring.hpp"
 
 #include <string.h>
 

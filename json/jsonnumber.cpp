@@ -3,7 +3,7 @@
  * Last Updated: Oct/25/2014
  */
 
-#include "jsonnumber.h"
+#include "jsonnumber.hpp"
 
 #include <stdlib.h>
 #include <ctype.h>

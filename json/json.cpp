@@ -3,7 +3,7 @@
  * Last Updated: Oct/24/2014
  */
 
-#include "json.h"
+#include "json.hpp"
 
 #include <ctype.h>
 

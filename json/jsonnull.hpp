@@ -3,10 +3,10 @@
  * Last Updated: Oct/25/2014
  */
 
-#ifndef JSONNULL_H
-#define JSONNULL_H
+#ifndef JSONNULL_HPP
+#define JSONNULL_HPP
 
-#include "json.h"
+#include "json.hpp"
 
 #include <string>
 

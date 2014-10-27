@@ -3,7 +3,7 @@
  * Last Updated: Oct/25/2014
  */
 
-#include "jsonboolean.h"
+#include "jsonboolean.hpp"
 
 JsonBoolean::JsonBoolean(const std::string& str) {
     const char* c_str = str.c_str();

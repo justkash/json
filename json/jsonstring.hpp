@@ -3,13 +3,13 @@
  * Last Updated: Oct/24/2014
  */
 
-#ifndef JSONSTRING_H
-#define JSONSTRING_H
+#ifndef JSONSTRING_HPP
+#define JSONSTRING_HPP
 
 #include <string>
 #include <stddef.h>
 
-#include "json.h"
+#include "json.hpp"
 
 class JsonString : public Json {
     public:

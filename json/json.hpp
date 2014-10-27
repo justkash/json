@@ -3,8 +3,8 @@
  * Last Updated: Oct/24/2014
  */
 
-#ifndef JSON_H
-#define JSON_H
+#ifndef JSON_HPP
+#define JSON_HPP
 
 #include <string>
 
