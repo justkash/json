@@ -154,9 +154,49 @@ void JsonArray::destroy() {
     Json** end = ptr + size_;
     while (ptr != end) {
         delete *ptr;
+        *ptr = NULL;
         ++ptr;
     }
-    free(ptr);
+    free(arr_);
+    arr_ = NULL;
+}
+
+JsonString& JsonArray::operator[](int index) {
+    if (index < 0)
+        throw("[Error] Index out of bounds in JsonArray");
+    if (arr_ != NULL && *(arr_ + index) != NULL) {
+        if (index < size_) {
+            Json* ptr = *(arr_ + index);
+            if (typeid(*ptr) != typeid(JsonString))
+                throw("[Error] Object at index is not of type JsonString");
+            return *((JsonString*)ptr);
+        }
+        else
+            throw("[Error] Index out of bounds in JsonArray");
+    }
+    else if (str_ != NULL){
+        if (index < str_num_values_) {
+            ValuePointer *val_ptr = str_value_ptrs_ + index;
+            if (val_ptr->len == 0)
+                throw("[Error] Invalid JsonString");
+            char temp[val_ptr->len + 1];
+            strncpy(temp, str_ + val_ptr->start, val_ptr->len);
+            temp[val_ptr->len] = '\0';
+            JsonString *json_ptr = new JsonString(std::string(temp));
+            if (arr_ == NULL) {
+                arr_  = (Json**)calloc(str_num_values_, sizeof(Json*));
+                if (arr_ == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                size_ = str_num_values_;
+            }
+            *(arr_ + index) = json_ptr;
+            return *((JsonString*)*(arr_ + index));
+        }
+        else 
+            throw("[Error] Index out of bounds in JsonArray");
+    }
+    else
+        throw("[Error] Index out of bounds in JsonArray");
 }
 
 std::string JsonArray::stringify() {

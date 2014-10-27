@@ -23,9 +23,9 @@ class JsonArray : public Json {
         JsonArray(const JsonArray&);
         const JsonArray& operator=(const JsonArray&);
         virtual ~JsonArray();
-        /*
+        
         JsonString& operator[](int);
-        JsonNumber& operator[](int);
+        /*JsonNumber& operator[](int);
         JsonBoolean& operator[](int);
         JsonNull& operator[](int);
         JsonArray& operator[](int);
@@ -53,7 +53,6 @@ class JsonArray : public Json {
             size_t len;
         };
         
-
         Json** arr_;
         size_t size_;
         char* str_;

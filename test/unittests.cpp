@@ -152,6 +152,8 @@ void test_empty_constructor_JsonNull() {
 
 void test_string_constructor_JsonArray() {
     JsonArray temp("[{asd},1,12.3,\"asd\"]");
+    JsonString temp_str = temp[3];
+    assert(temp_str.get_string() == "asd");
 }
 
 int main() {
@@ -163,7 +165,7 @@ int main() {
         test_assignment_JsonString();
         test_constructor_JsonString();
         test_stringify_JsonString();
-
+        
         // JsonNumber
         test_string_constructor_double_JsonNumber();
         test_string_constructor_int_JsonNumber();
@@ -178,7 +180,7 @@ int main() {
         test_is_int_JsonNumber();
         test_copy_JsonNumber();
         test_assignment_JsonNumber();
-
+        
         // JsonBoolean
         test_string_constructor_true_JsonBoolean();
         test_string_constructor_false_JsonBoolean();

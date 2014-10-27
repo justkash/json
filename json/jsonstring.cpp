@@ -17,7 +17,7 @@ JsonString::JsonString(const std::string& str) {
         if (str_ == 0)
             throw("[Error] Unsuccessful memory allocation for JsonString");
         strcpy(str_, c_str);
-        json_str_ = 0;
+        json_str_ = NULL;
     }
     else {
         // Assume that str is a json string
@@ -30,12 +30,15 @@ JsonString::JsonString(const std::string& str) {
             throw("[Error] Unsuccessful memory allocation for JsonString");
         strncpy(json_str_, first_quote, len_ + 2);
         *(json_str_ + len_ + 4) = '\0';
-        str_ = 0;
+        str_ = NULL;
     }
     byte_size_ = len_ + 2;
 }
 
 JsonString::JsonString(const JsonString& src) {
+    str_ = NULL;
+    json_str_ = NULL;
+    len_ = 0;
     copy(src);
 }
 
