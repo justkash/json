@@ -10,6 +10,7 @@
 #include "../json/jsonnumber.h"
 #include "../json/jsonboolean.h"
 #include "../json/jsonnull.h"
+#include "../json/jsonarray.h"
 
 using namespace std;
 
@@ -147,6 +148,12 @@ void test_empty_constructor_JsonNull() {
     assert(temp.stringify() == "null");
 }
 
+// JsonArray
+
+void test_string_constructor_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+}
+
 int main() {
     clock_t start, stop;
     start = clock();
@@ -183,6 +190,9 @@ int main() {
         // JsonNull
         test_string_constructor_JsonNull();
         test_empty_constructor_JsonNull();
+
+        // JsonArray
+        test_string_constructor_JsonArray();
 
         puts("Tests successfully completed.");
     }

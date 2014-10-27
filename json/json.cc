@@ -9,13 +9,22 @@
 
 const char* Json::find_next_char(const char* str, const char to_find) {
    const char* ptr = str;
-   while (*ptr != to_find && *ptr != '\0') ++ptr;
+   while (*ptr != to_find && *ptr != '\0')
+       ++ptr;
    return ptr;
 }
 
 const char* Json::find_next_non_space_char(const char* str) {
     const char* ptr = str;
-    while (isspace(*ptr) && *ptr != '\0') ++ptr;
+    while (isspace(*ptr) && *ptr != '\0')
+        ++ptr;
+    return ptr;
+}
+
+const char* Json::find_next_either_chars(const char* str, const char one, const char two) {
+    const char* ptr = str;
+    while (*ptr != one && *ptr != two && *ptr != '\0')
+        ++ptr;
     return ptr;
 }
 
@@ -29,3 +38,5 @@ bool Json::check_contains(const char* big_str, const char* small_str) {
     }
     return true;
 }
+
+Json::~Json() {}

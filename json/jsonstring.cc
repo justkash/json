@@ -102,7 +102,7 @@ void JsonString::copy(const JsonString& src) {
 
 void JsonString::destroy() {
     delete [] json_str_;
-    json_str_ = 0;
+    json_str_ = NULL;
     delete [] str_;
-    str_ = 0;
+    str_ = NULL;
 }   

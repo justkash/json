@@ -10,7 +10,7 @@
 
 #include <string>
 
-class JsonNull : Json {
+class JsonNull : public Json {
     public:
         JsonNull(const std::string&);
         JsonNull();

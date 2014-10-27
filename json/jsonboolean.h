@@ -11,7 +11,7 @@
 
 #include "json.h"
 
-class JsonBoolean : Json {
+class JsonBoolean : public Json {
     public:
         JsonBoolean(const std::string&);
         JsonBoolean(bool);
