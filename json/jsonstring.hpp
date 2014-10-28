@@ -13,6 +13,7 @@
 
 class JsonString : public Json {
     public:
+        JsonString(const char*);
         JsonString(const std::string&);
         JsonString(const JsonString&);
         const JsonString& operator=(const JsonString&);
@@ -29,6 +30,7 @@ class JsonString : public Json {
 
         void copy(const JsonString& src);
         void destroy();
+        void init(const char*, size_t);
 };
 
 #endif

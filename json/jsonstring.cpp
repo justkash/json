@@ -7,12 +7,11 @@
 
 #include <string.h>
 
-JsonString::JsonString(const std::string& str) {
-    const char* c_str = str.c_str();
+void JsonString::init(const char* c_str, size_t size) {
     const char* first_quote = Json::find_next_char(c_str, '"');
     if (*first_quote == '\0') {
         // Assume that str is a regular string
-        len_ = str.size();
+        len_ = size;
         str_ = new char[len_ + 1];
         if (str_ == 0)
             throw("[Error] Unsuccessful memory allocation for JsonString");
@@ -33,6 +32,15 @@ JsonString::JsonString(const std::string& str) {
         str_ = NULL;
     }
     byte_size_ = len_ + 2;
+}
+
+JsonString::JsonString(const std::string& str) {
+    const char* c_str = str.c_str();
+    init(c_str, str.size());
+}
+
+JsonString::JsonString(const char* c_str) {
+    init(c_str, strlen(c_str));
 }
 
 JsonString::JsonString(const JsonString& src) {

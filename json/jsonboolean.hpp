@@ -23,6 +23,8 @@ class JsonBoolean : public Json {
     private:
         bool is_true_;
         size_t byte_size_;
+
+        void init(const char*);
 };
 
 #endif

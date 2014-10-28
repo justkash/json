@@ -149,12 +149,81 @@ void test_empty_constructor_JsonNull() {
 }
 
 // JsonArray
-
 void test_string_constructor_JsonArray() {
     JsonArray temp("[{asd},1,12.3,\"asd\"]");
-    JsonString temp_str = temp[3];
-    assert(temp_str.get_string() == "asd");
+    assert(dynamic_cast<JsonString&>(temp.get(3)).get_string() == "asd");
 }
+
+void test_get_JsonString_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+    assert(dynamic_cast<JsonString&>(temp.get(3)).get_string() == "asd");
+}
+
+void test_get_JsonNumber_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+    assert(dynamic_cast<JsonNumber&>(temp.get(1)).get_int() == 1);
+}
+
+void test_get_JsonBoolean_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\", true]");
+    assert(dynamic_cast<JsonBoolean&>(temp.get(4)).get_bool() == true);
+}
+
+void test_get_JsonArray_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\", [1, 2, 3]]");
+    JsonArray arr = dynamic_cast<JsonArray&>(temp.get(4));
+    assert(dynamic_cast<JsonNumber&>(arr.get(0)).get_int() == 1);
+}
+
+void test_get_JsonNull_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\", null]");
+    assert(dynamic_cast<JsonNull&>(temp.get(4)).stringify() == "null");
+}
+/*
+void test_get_JsonObject_JsonArray() {
+    JsonArray temp("[{\"key\": \"value\"},1,12.3,\"asd\"]");
+
+}*/
+
+void test_set_JsonString_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+    JsonString test("asdf");
+    temp.set(0, test);
+    assert(dynamic_cast<JsonString&>(temp.get(0)).get_string() == "asdf");
+}
+
+void test_set_JsonNumber_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+    JsonNumber test(1);
+    temp.set(0, test);
+    assert(dynamic_cast<JsonNumber&>(temp.get(0)).get_int() == 1);
+}
+
+void test_set_JsonBoolean_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\", true]");
+    JsonBoolean test(true);
+    temp.set(1, test);
+    assert(dynamic_cast<JsonBoolean&>(temp.get(1)).get_bool() == true);
+}
+
+void test_set_JsonArray_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\", [1, 2, 3]]");
+    JsonArray test("[1, 2, 3]");
+    temp.set(2, test);
+    JsonArray arr = dynamic_cast<JsonArray&>(temp.get(2));
+    assert(dynamic_cast<JsonNumber&>(arr.get(0)).get_int() == 1);
+}
+
+void test_set_JsonNull_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\", null]");
+    JsonNull test;
+    temp.set(0, test);
+    assert(dynamic_cast<JsonNull&>(temp.get(0)).stringify() == "null");
+}
+/*
+void test_set_JsonObject_JsonArray() {
+    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+}*/
 
 int main() {
     clock_t start, stop;
@@ -195,6 +264,18 @@ int main() {
 
         // JsonArray
         test_string_constructor_JsonArray();
+        test_get_JsonString_JsonArray();
+        test_get_JsonNumber_JsonArray();
+        test_get_JsonBoolean_JsonArray();
+        test_get_JsonArray_JsonArray();
+        test_get_JsonNull_JsonArray();
+        //test_get_JsonObject_JsonArray();*/
+        test_set_JsonString_JsonArray();
+        test_set_JsonNumber_JsonArray();
+        test_set_JsonBoolean_JsonArray();
+        test_set_JsonArray_JsonArray();
+        test_set_JsonNull_JsonArray();
+        //test_set_JsonObject_JsonArray();
 
         puts("Tests successfully completed.");
     }

@@ -5,8 +5,7 @@
 
 #include "jsonboolean.hpp"
 
-JsonBoolean::JsonBoolean(const std::string& str) {
-    const char* c_str = str.c_str();
+void JsonBoolean::init(const char* c_str) {
     const char* ptr = Json::find_next_non_space_char(c_str);
     if (*ptr == 't') {
         bool check = Json::check_contains(ptr, "true");
@@ -27,25 +26,13 @@ JsonBoolean::JsonBoolean(const std::string& str) {
     }
 }
 
-JsonBoolean::JsonBoolean(const char* str) {
-    const char* ptr = Json::find_next_non_space_char(str);
-    if (*ptr == 't') {
-        bool check = Json::check_contains(ptr, "true");
-        if (!check)
-            throw("[Error] Invalid json boolean; true spelled incorrectly");
-        is_true_ = true;
-        byte_size_ = 4;
-    }
-    else if (*ptr == 'f') {
-        bool check = Json::check_contains(ptr, "false");
-        if (!check)
-            throw("[Error] Invalid json boolean; false spelled incorrectly");
-        is_true_ = false;
-        byte_size_ = 5;
-    }
-    else {
-        throw("[Error] Invalid json boolean; true/false not found");
-    }
+JsonBoolean::JsonBoolean(const std::string& str) {
+    const char* c_str = str.c_str();
+    init(c_str);
+}
+
+JsonBoolean::JsonBoolean(const char* c_str) {
+    init(c_str);
 }
 
 JsonBoolean::JsonBoolean(bool val) {

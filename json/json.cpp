@@ -7,6 +7,43 @@
 
 #include <ctype.h>
 
+Json::JsonType Json::find_type(const char* str) {
+	const char* first_non_space_char = Json::find_next_non_space_char(str);
+	switch(*first_non_space_char) {
+		case '{':
+            return JSONOBJECT;
+			break;
+		case '"':
+            return JSONSTRING;
+			break;
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case '0':
+		case '-':
+            return JSONNUMBER;
+			break;
+		case 't':
+		case 'f':
+            return JSONBOOLEAN;
+			break;
+		case '[':
+            return JSONARRAY;
+			break;
+		case 'n':
+            return JSONNULL;
+			break;
+		default:
+			throw("[Error] Invalid JSON string");
+	}
+}
+
 const char* Json::find_next_char(const char* str, const char to_find) {
    const char* ptr = str;
    while (*ptr != to_find && *ptr != '\0')

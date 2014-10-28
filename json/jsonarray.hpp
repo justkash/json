@@ -19,18 +19,20 @@
 class JsonArray : public Json {
     public:
         //JsonArray();
+        JsonArray(const char*);
         JsonArray(const std::string&);
         JsonArray(const JsonArray&);
         const JsonArray& operator=(const JsonArray&);
         virtual ~JsonArray();
         
-        JsonString& operator[](int);
-        /*JsonNumber& operator[](int);
-        JsonBoolean& operator[](int);
-        JsonNull& operator[](int);
-        JsonArray& operator[](int);
-        //JsonObject& operator[](int);
-        void push_back(const JsonString&);
+        Json& get(int);
+        void set(int, const JsonString&);
+        void set(int, const JsonNumber&);
+        void set(int, const JsonBoolean&);
+        void set(int, const JsonNull&);
+        void set(int, const JsonArray&);
+        //void set(const JsonObject&);
+        /*void push_back(const JsonString&);
         void push_back(const JsonNumber&);
         void push_back(const JsonBoolean&);
         void push_back(const JsonNull&);
@@ -44,7 +46,8 @@ class JsonArray : public Json {
         //void insert(int, const JsonObject&);
         void remove(int);
         size_t size();
-        void resize(int);*/
+        void resize(int);
+        bool is_empty();*/
         virtual std::string stringify();
 
     private:
@@ -52,7 +55,7 @@ class JsonArray : public Json {
             int start;
             size_t len;
         };
-        
+       
         Json** arr_;
         size_t size_;
         char* str_;
@@ -63,6 +66,9 @@ class JsonArray : public Json {
 
         void copy(const JsonArray&);
         void destroy();
+        void init(const char*);
+        void check_index_bounds(int);
+        void set(int, Json*);
 };
 
 #endif

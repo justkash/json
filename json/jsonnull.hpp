@@ -12,6 +12,7 @@
 
 class JsonNull : public Json {
     public:
+        JsonNull(const char*);
         JsonNull(const std::string&);
         JsonNull();
 
@@ -19,6 +20,8 @@ class JsonNull : public Json {
 
     private:
         size_t byte_size_;
+
+        void init(const char*);
 };
 
 #endif

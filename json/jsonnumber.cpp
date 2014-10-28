@@ -8,8 +8,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-JsonNumber::JsonNumber(const std::string& str) {
-    const char* c_str = str.c_str();
+void JsonNumber::init(const char* c_str) {
     char* end_ptr;
     double_val_ = strtod(c_str, &end_ptr);
     const char* ptr = c_str + 1;
@@ -35,6 +34,15 @@ JsonNumber::JsonNumber(const std::string& str) {
         decimal_count_ = ctr; 
         byte_size_ += (decimal_count_ + 1);    
     }
+}
+
+JsonNumber::JsonNumber(const std::string& str) {
+    const char* c_str = str.c_str();
+    init(c_str);
+}
+
+JsonNumber::JsonNumber(const char* c_str) {
+    init(c_str);
 }
 
 JsonNumber::JsonNumber(double num) {
