@@ -225,6 +225,46 @@ void test_set_JsonObject_JsonArray() {
     JsonArray temp("[{asd},1,12.3,\"asd\"]");
 }*/
 
+void test_push_back_JsonString_JsonArray() {
+    JsonArray arr("[]");
+    JsonString test("hello");
+    arr.push_back(test);
+    assert(dynamic_cast<JsonString&>(arr.get(0)).get_string() == "hello");
+}
+
+void test_push_back_JsonNumber_JsonArray() {
+    JsonArray arr("[1, \"hello\"]");
+    JsonNumber test(2);
+    arr.push_back(test);
+    assert(dynamic_cast<JsonNumber&>(arr.get(2)).get_int() == 2);
+}
+
+void test_push_back_JsonBoolean_JsonArray() {
+    JsonArray arr("[1, \"hello\"]");
+    JsonBoolean test(false);
+    arr.push_back(test);
+    assert(dynamic_cast<JsonBoolean&>(arr.get(2)).get_bool() == false);
+}
+
+void test_push_back_JsonArray_JsonArray() {
+    JsonArray arr("[1, \"hello\"]");
+    JsonArray test("[1, 2]");
+    arr.push_back(test);
+    JsonArray test2 = dynamic_cast<JsonArray&>(arr.get(2));
+    assert(dynamic_cast<JsonNumber&>(test2.get(1)).get_int() == 2);
+}
+
+void test_push_back_JsonNull_JsonArray() {
+    JsonArray arr("[1, \"hello\"]");
+    JsonNull test;
+    arr.push_back(test);
+    assert(dynamic_cast<JsonNull&>(arr.get(2)).stringify() == "null");
+}
+
+/*void test_push_back_JsonObject_JsonArray() {
+
+}*/
+
 int main() {
     clock_t start, stop;
     start = clock();
@@ -269,13 +309,19 @@ int main() {
         test_get_JsonBoolean_JsonArray();
         test_get_JsonArray_JsonArray();
         test_get_JsonNull_JsonArray();
-        //test_get_JsonObject_JsonArray();*/
+        //test_get_JsonObject_JsonArray();
         test_set_JsonString_JsonArray();
         test_set_JsonNumber_JsonArray();
         test_set_JsonBoolean_JsonArray();
         test_set_JsonArray_JsonArray();
         test_set_JsonNull_JsonArray();
         //test_set_JsonObject_JsonArray();
+        test_push_back_JsonString_JsonArray();
+        test_push_back_JsonNumber_JsonArray();
+        test_push_back_JsonBoolean_JsonArray();
+        test_push_back_JsonArray_JsonArray();
+        test_push_back_JsonNull_JsonArray();
+        //test_push_back_JsonObject_JsonArray();
 
         puts("Tests successfully completed.");
     }

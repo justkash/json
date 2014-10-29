@@ -32,22 +32,22 @@ class JsonArray : public Json {
         void set(int, const JsonNull&);
         void set(int, const JsonArray&);
         //void set(const JsonObject&);
-        /*void push_back(const JsonString&);
+        void push_back(const JsonString&);
         void push_back(const JsonNumber&);
         void push_back(const JsonBoolean&);
         void push_back(const JsonNull&);
         void push_back(const JsonArray&);
         //void push_back(const JsonObject&);
-        void insert(int, const JsonString&);
+        /*void insert(int, const JsonString&);
         void insert(int, const JsonNumber&);
         void insert(int, const JsonBoolean&);
         void insert(int, const JsonNull&);
         void insert(int, const JsonArray&);
         //void insert(int, const JsonObject&);
         void remove(int);
+        void resize(int);*/
         size_t size();
-        void resize(int);
-        bool is_empty();*/
+        bool is_empty();
         virtual std::string stringify();
 
     private:
@@ -69,6 +69,7 @@ class JsonArray : public Json {
         void init(const char*);
         void check_index_bounds(int);
         void set(int, Json*);
+        void push_back(Json*);
 };
 
 #endif

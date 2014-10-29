@@ -66,6 +66,15 @@ void JsonArray::init(const char* c_str) {
         }
         ++ptr_two;
     }
+    if (str_num_values_ == 1 && str_value_ptrs_->len == 0) {
+        // Empty array
+        delete [] str_;
+        str_ = NULL;
+        str_len_ = 0;
+        delete [] str_value_ptrs_;
+        str_value_ptrs_ = NULL;
+        str_num_values_ = 0;
+    }
     arr_ = NULL;
     size_ = 0;
     byte_size_ = 0;
@@ -306,6 +315,82 @@ void JsonArray::set(int index, const JsonObject& json) {
         throw("[Error] Unsuccessful memory allocation for JsonObject");
     set(index, new_json);
 }*/
+
+void JsonArray::push_back(Json* json) {
+    if (arr_ == NULL) {
+        if (str_ == NULL) {
+            arr_ = (Json**)malloc(sizeof(Json*));
+            if (arr_ == NULL)
+                throw("[Error] Unsuccessful memory allocation for JsonArray");
+            *arr_ = json;
+            size_ = 1;
+        }
+        else {
+            arr_ = (Json**)calloc(str_num_values_ + 1, sizeof(Json*));
+            if (arr_ == NULL)
+                throw("[Error] Unsuccessful memory allocation for JsonArray");
+            *(arr_ + str_num_values_) = json;
+            size_ = str_num_values_ + 1;
+        }
+    }
+    else {
+        Json** new_arr = (Json**)realloc(arr_, (size_ + 1)*sizeof(Json*));
+        if (new_arr == NULL) {
+            destroy();
+            throw("[Error] Unsuccessful memory reallocation for JsonArray");
+        }
+        arr_ = new_arr;
+        *(arr_ + size_) = json;
+        ++size_;
+    }
+}
+
+void JsonArray::push_back(const JsonString& json) {
+    Json* new_json = new JsonString(json);
+    push_back(new_json);
+}
+
+void JsonArray::push_back(const JsonNumber& json) {
+    Json* new_json = new JsonNumber(json);
+    push_back(new_json);
+}
+
+void JsonArray::push_back(const JsonBoolean& json) {
+    Json* new_json = new JsonBoolean(json);
+    push_back(new_json);
+}
+
+void JsonArray::push_back(const JsonNull& json) {
+    Json* new_json = new JsonNull(json);
+    push_back(new_json);
+}
+
+void JsonArray::push_back(const JsonArray& json) {
+    Json* new_json = new JsonArray(json);
+    push_back(new_json);
+}
+/*
+void JsonArray::push_back(const JsonObject& json) {
+    Json* new_json = new JsonObject(json);
+    push_back(new_json);
+}*/
+
+size_t JsonArray::size() {
+    if (arr_ == NULL) {
+        if (str_ == NULL)
+            return 0;
+        else
+            return str_num_values_;
+    }
+    else
+        return size_;
+}
+
+bool JsonArray::is_empty() {
+    if (size_ == 0 && str_num_values_ == 0)
+        return true;
+    return false;
+}
 
 std::string JsonArray::stringify() {
     return "";
