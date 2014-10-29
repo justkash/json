@@ -264,6 +264,43 @@ void test_push_back_JsonNull_JsonArray() {
 /*void test_push_back_JsonObject_JsonArray() {
 
 }*/
+void test_insert_JsonString_JsonArray() {
+    JsonArray arr("[1, \"hello\"]");
+    JsonString test("hello");
+    arr.insert(0, test);
+    assert(dynamic_cast<JsonString&>(arr.get(0)).get_string() == "hello");
+}
+
+void test_insert_JsonNumber_JsonArray() {
+    JsonArray arr;
+    JsonNumber test(1.2);
+    arr.insert(0, test);
+    assert(dynamic_cast<JsonNumber&>(arr.get(0)).get_double() == 1.2);
+}
+
+void test_insert_JsonBoolean_JsonArray() {
+    JsonArray arr("[1, 2, 3]");
+    JsonBoolean test(true);
+    arr.insert(3, test);
+    assert(dynamic_cast<JsonBoolean&>(arr.get(3)).get_bool() == true);
+}
+
+void test_insert_JsonArray_JsonArray() {
+    JsonArray arr("[]");
+    JsonArray test("[1, 2, 3]");
+    arr.insert(0, test);
+    JsonArray arr2 = dynamic_cast<JsonArray&>(arr.get(0));
+    assert(dynamic_cast<JsonNumber&>(arr2.get(2)).get_int() == 3);
+}
+
+void test_insert_JsonNull_JsonArray() {
+    JsonArray arr("[1, 2, 3]");
+    JsonNull test;
+    arr.insert(1, test);
+    assert(dynamic_cast<JsonNull&>(arr.get(1)).stringify() == "null");
+}
+
+//void test_insert_JsonObject_JsonArray() {}
 
 int main() {
     clock_t start, stop;
@@ -322,6 +359,12 @@ int main() {
         test_push_back_JsonArray_JsonArray();
         test_push_back_JsonNull_JsonArray();
         //test_push_back_JsonObject_JsonArray();
+        test_insert_JsonString_JsonArray();
+        test_insert_JsonNumber_JsonArray();
+        test_insert_JsonBoolean_JsonArray();
+        test_insert_JsonArray_JsonArray();
+        test_insert_JsonNull_JsonArray();
+        //test_insert_JsonObject_JsonArray();
 
         puts("Tests successfully completed.");
     }

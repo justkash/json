@@ -100,6 +100,16 @@ JsonArray::JsonArray(const JsonArray& src) {
     copy(src);
 }
 
+JsonArray::JsonArray() {
+    arr_ = NULL;
+    size_ = 0;
+    str_ = NULL;
+    str_len_ = 0;
+    str_num_values_ = 0;
+    str_value_ptrs_ = NULL;
+    byte_size_ = 0;
+}
+
 const JsonArray& JsonArray::operator=(const JsonArray& rhs) {
     copy(rhs);
     return *this;
@@ -188,13 +198,13 @@ void JsonArray::destroy() {
 
 Json& JsonArray::get(int index) {
     if (index < 0)
-        throw("[Error] Index out of JsonArray bounds");
+        throw("[Error] Index out of JsonArray bounds 7");
     if (arr_ != NULL && *(arr_ + index) != NULL) {
-        if (index < size_) {
+        if (index < size_ || index == 0) {
             return **(arr_ + index);
         }
         else
-            throw("[Error] Index out of JsonArray bounds");
+            throw("[Error] Index out of JsonArray bounds 8");
     }
     else if (str_ != NULL){
         if (index < str_num_values_) {
@@ -240,20 +250,28 @@ Json& JsonArray::get(int index) {
         throw("[Error] Index out of JsonArray bounds");
 }
 
-void JsonArray::check_index_bounds(int index) {
+void JsonArray::check_index_bounds(int index, bool is_insert) {
     if (index < 0)
-        throw("[Error] Index out of JsonArray bounds");
+        throw("[Error] Index out of JsonArray bounds 1");
     if (arr_ != NULL) {
         if (index > size_)
-            throw("[Error] Index out of JsonArray bounds");
+            throw("[Error] Index out of JsonArray bounds 2");
+        else if (!is_insert && index == size_)
+            throw("[Error] Index out of JsonArray bounds 3");
     }
     else {
         if (str_ != NULL) {
             if (index > str_num_values_)
-                throw("[Error] Index out of JsonArray bounds");
+                throw("[Error] Index out of JsonArray bounds 4");
+            else if (!is_insert && index == str_num_values_)
+                throw("[Error] Index out of JsonArray bounds 5");
         }
-        else
-            throw("[Error] Index out of JsonArray bounds");
+        else {
+            if (!is_insert)
+                throw("[Error] Index out of JsonArray bounds 6");
+            else if (index != 0)
+                throw("[Error] Index out of JsonArray bounds 6");
+        }
     }
 }
 
@@ -269,7 +287,7 @@ void JsonArray::set(int index, Json* json) {
 }
 
 void JsonArray::set(int index, const JsonString& json) {
-    check_index_bounds(index);
+    check_index_bounds(index, false);
     Json* new_json = new JsonString(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonString");
@@ -277,7 +295,7 @@ void JsonArray::set(int index, const JsonString& json) {
 }
 
 void JsonArray::set(int index, const JsonNumber& json) {
-    check_index_bounds(index);
+    check_index_bounds(index, false);
     Json* new_json = new JsonNumber(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonNumber");
@@ -285,7 +303,7 @@ void JsonArray::set(int index, const JsonNumber& json) {
 }
 
 void JsonArray::set(int index, const JsonBoolean& json) {
-    check_index_bounds(index);
+    check_index_bounds(index, false);
     Json* new_json = new JsonBoolean(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonBoolean");
@@ -293,7 +311,7 @@ void JsonArray::set(int index, const JsonBoolean& json) {
 }
 
 void JsonArray::set(int index, const JsonNull& json) {
-    check_index_bounds(index);
+    check_index_bounds(index, false);
     Json* new_json = new JsonNull(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonNull");
@@ -301,7 +319,7 @@ void JsonArray::set(int index, const JsonNull& json) {
 }
 
 void JsonArray::set(int index, const JsonArray& json) {
-    check_index_bounds(index);
+    check_index_bounds(index, false);
     Json* new_json = new JsonArray(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonArray");
@@ -309,7 +327,7 @@ void JsonArray::set(int index, const JsonArray& json) {
 }
 /*
 void JsonArray::set(int index, const JsonObject& json) {
-    check_index_bounds(index);
+    check_index_bounds(index, false);
     Json* new_json = new JsonObject(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonObject");
@@ -335,10 +353,8 @@ void JsonArray::push_back(Json* json) {
     }
     else {
         Json** new_arr = (Json**)realloc(arr_, (size_ + 1)*sizeof(Json*));
-        if (new_arr == NULL) {
-            destroy();
+        if (new_arr == NULL)
             throw("[Error] Unsuccessful memory reallocation for JsonArray");
-        }
         arr_ = new_arr;
         *(arr_ + size_) = json;
         ++size_;
@@ -373,6 +389,194 @@ void JsonArray::push_back(const JsonArray& json) {
 void JsonArray::push_back(const JsonObject& json) {
     Json* new_json = new JsonObject(json);
     push_back(new_json);
+}*/
+
+void JsonArray::insert(int index, Json* json) {
+    if (arr_ == NULL) {
+        if (str_ == NULL) {
+            if (index == 0) {
+                arr_ = (Json**)malloc(sizeof(Json*));
+                if (arr_ == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                *arr_ = json;
+                size_ = 1;
+            }
+            else
+                throw("[Error] Invalid index for JsonArray");
+        }
+        else {
+            if (index == 0) {
+                ValuePointer* new_str_value_ptrs = new ValuePointer[str_num_values_ + 1];
+                if (new_str_value_ptrs == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_str_value_ptrs + 1, str_value_ptrs_, str_num_values_*sizeof(ValuePointer));
+                delete [] str_value_ptrs_;
+                str_value_ptrs_ = new_str_value_ptrs;
+                ++str_num_values_;
+
+                arr_ = (Json**)calloc(str_num_values_, sizeof(Json*));
+                if (arr_ == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                *arr_ = json;
+                size_ = str_num_values_;
+            }
+            else if (index == str_num_values_) {
+                push_back(json);
+            }
+            else {
+               ValuePointer* new_str_value_ptrs = new ValuePointer[str_num_values_ + 1];
+                if (new_str_value_ptrs == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_str_value_ptrs, str_value_ptrs_, sizeof(ValuePointer)*index);
+                if (index != str_num_values_ - 1)
+                    memcpy(new_str_value_ptrs + index + 1, str_value_ptrs_ + index, (str_num_values_ - index)*sizeof(ValuePointer));
+                delete [] str_value_ptrs_;
+                str_value_ptrs_ = new_str_value_ptrs;
+                ++str_num_values_;
+
+                arr_ = (Json**)calloc(str_num_values_, sizeof(Json*));
+                if (arr_ == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                *(arr_ + index) = json;
+                size_ = str_num_values_;
+            }
+        }
+    }
+    else {
+        if (str_ == NULL) {
+            if (index == 0) {
+                Json** new_arr = (Json**)malloc((size_ + 1)*sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                *new_arr = json;
+                memcpy(new_arr + 1, arr_, size_*sizeof(Json*));
+                free(arr_);
+                arr_ = new_arr;
+                ++size_;
+            }
+            else if (index == size_) {
+                push_back(json); 
+            }
+            else {
+                Json** new_arr = (Json**)malloc((size_ + 1)*sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_arr, arr_, index*sizeof(Json*));
+                memcpy(new_arr + index + 1, arr_ + index, (size_ - index)*sizeof(Json*));
+                *(new_arr + index) = json;
+                free(arr_);
+                arr_ = new_arr;
+                ++size_;
+            }
+        }
+        else {
+            if (index >= str_num_values_) {
+                if (index == size_) {
+                    push_back(json);
+                }
+                else {
+                    Json** new_arr = (Json**)malloc((size_ + 1)*sizeof(Json*));
+                    if (new_arr == NULL)
+                        throw("[Error] Unsuccessful memory allocation for JsonArray");
+                    memcpy(new_arr, arr_, index*sizeof(Json*));
+                    memcpy(new_arr + index + 1, arr_ + index, (size_ - index)*sizeof(Json*));
+                    *(new_arr + index) = json;
+                    free(arr_);
+                    arr_ = new_arr;
+                    ++size_;
+                }
+            }
+            else {
+                if (index == 0) {
+                    ValuePointer* new_str_value_ptrs = new ValuePointer[str_num_values_ + 1];
+                    if (new_str_value_ptrs == NULL)
+                        throw("[Error] Unsuccessful memory allocation for JsonArray");
+                    memcpy(new_str_value_ptrs + 1, str_value_ptrs_, str_num_values_*sizeof(ValuePointer));
+                    delete [] str_value_ptrs_;
+                    str_value_ptrs_ = new_str_value_ptrs;
+                    ++str_num_values_;
+
+                    Json** new_arr = (Json**)malloc((size_ + 1)*sizeof(Json*));
+                    if (new_arr == NULL)
+                        throw("[Error] Unsuccessful memory allocation for JsonArray");
+                    *new_arr = json;
+                    memcpy(new_arr + 1, arr_, size_*sizeof(Json*));
+                    free(arr_);
+                    arr_ = new_arr;
+                    ++size_;
+                }
+                else {
+                    ValuePointer* new_str_value_ptrs = new ValuePointer[str_num_values_ + 1];
+                    if (new_str_value_ptrs == NULL)
+                        throw("[Error] Unsuccessful memory allocation for JsonArray");
+                    memcpy(new_str_value_ptrs, str_value_ptrs_, sizeof(ValuePointer)*index);
+                    if (index != str_num_values_ - 1)
+                        memcpy(new_str_value_ptrs + index + 1, str_value_ptrs_ + index, (str_num_values_ - index)*sizeof(ValuePointer));
+                    delete [] str_value_ptrs_;
+                    str_value_ptrs_ = new_str_value_ptrs;
+                    ++str_num_values_;
+
+                    Json** new_arr = (Json**)malloc((size_ + 1)*sizeof(Json*));
+                    if (new_arr == NULL)
+                        throw("[Error] Unsuccessful memory allocation for JsonArray");
+                    memcpy(new_arr, arr_, index*sizeof(Json*));
+                    memcpy(new_arr + index + 1, arr_ + index, (size_ - index)*sizeof(Json*));
+                    *(new_arr + index) = json;
+                    free(arr_);
+                    arr_ = new_arr;
+                    ++size_;
+                }
+            } 
+        }
+    }
+}
+
+void JsonArray::insert(int index, const JsonString& json) {
+    check_index_bounds(index, true);
+    Json* new_json = new JsonString(json);
+    if (new_json == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonString");
+    insert(index, new_json);
+}
+
+void JsonArray::insert(int index, const JsonNumber& json) {
+    check_index_bounds(index, true);
+    Json* new_json = new JsonNumber(json);
+    if (new_json == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonString");
+    insert(index, new_json);
+}
+
+void JsonArray::insert(int index, const JsonBoolean& json) {
+    check_index_bounds(index, true);
+    Json* new_json = new JsonBoolean(json);
+    if (new_json == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonString");
+    insert(index, new_json);
+}
+
+void JsonArray::insert(int index, const JsonNull& json) {
+    check_index_bounds(index, true);
+    Json* new_json = new JsonNull(json);
+    if (new_json == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonString");
+    insert(index, new_json);
+}
+
+void JsonArray::insert(int index, const JsonArray& json) {
+    check_index_bounds(index, true);
+    Json* new_json = new JsonArray(json);
+    if (new_json == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonString");
+    insert(index, new_json);
+}
+
+/*void JsonArray::insert(int index, const JsonObject& json) {
+    check_index_bounds(index, true);
+    Json* new_json = new JsonObject(json);
+    if (new_json == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonString");
+    insert(index, new_json);
 }*/
 
 size_t JsonArray::size() {

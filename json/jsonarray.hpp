@@ -18,7 +18,7 @@
 
 class JsonArray : public Json {
     public:
-        //JsonArray();
+        JsonArray();
         JsonArray(const char*);
         JsonArray(const std::string&);
         JsonArray(const JsonArray&);
@@ -38,13 +38,13 @@ class JsonArray : public Json {
         void push_back(const JsonNull&);
         void push_back(const JsonArray&);
         //void push_back(const JsonObject&);
-        /*void insert(int, const JsonString&);
+        void insert(int, const JsonString&);
         void insert(int, const JsonNumber&);
         void insert(int, const JsonBoolean&);
         void insert(int, const JsonNull&);
         void insert(int, const JsonArray&);
         //void insert(int, const JsonObject&);
-        void remove(int);
+        /*void remove(int);
         void resize(int);*/
         size_t size();
         bool is_empty();
@@ -67,9 +67,12 @@ class JsonArray : public Json {
         void copy(const JsonArray&);
         void destroy();
         void init(const char*);
-        void check_index_bounds(int);
+        void check_index_bounds(int, bool);
         void set(int, Json*);
         void push_back(Json*);
+        void insert(int, Json*);
+        void allocate_copy_arr(int, Json*);
+        void allocate_copy_str_value_ptrs(int, Json*);
 };
 
 #endif
