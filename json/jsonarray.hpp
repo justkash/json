@@ -26,6 +26,12 @@ class JsonArray : public Json {
         virtual ~JsonArray();
         
         Json& get(int);
+        JsonString& get_string(int);
+        JsonNumber& get_number(int);
+        JsonBoolean& get_boolean(int);
+        JsonNull& get_null(int);
+        JsonArray& get_array(int);
+        //JsonObject& get_object(int);
         void set(int, const JsonString&);
         void set(int, const JsonNumber&);
         void set(int, const JsonBoolean&);
@@ -44,8 +50,8 @@ class JsonArray : public Json {
         void insert(int, const JsonNull&);
         void insert(int, const JsonArray&);
         //void insert(int, const JsonObject&);
-        /*void remove(int);
-        void resize(int);*/
+        void remove(int);
+        void resize(int);
         size_t size();
         bool is_empty();
         virtual std::string stringify();
@@ -62,7 +68,6 @@ class JsonArray : public Json {
         size_t str_len_;
         size_t str_num_values_;
         ValuePointer* str_value_ptrs_;
-        size_t byte_size_;
 
         void copy(const JsonArray&);
         void destroy();
@@ -71,8 +76,8 @@ class JsonArray : public Json {
         void set(int, Json*);
         void push_back(Json*);
         void insert(int, Json*);
-        void allocate_copy_arr(int, Json*);
-        void allocate_copy_str_value_ptrs(int, Json*);
+        void remove_arr(int);
+        void remove_str(int);
 };
 
 #endif

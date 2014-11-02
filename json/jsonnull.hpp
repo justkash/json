@@ -12,14 +12,13 @@
 
 class JsonNull : public Json {
     public:
+        JsonNull();
         JsonNull(const char*);
         JsonNull(const std::string&);
-        JsonNull();
 
         virtual std::string stringify();
 
     private:
-        size_t byte_size_;
 
         void init(const char*);
 };

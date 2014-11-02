@@ -12,14 +12,12 @@ void JsonBoolean::init(const char* c_str) {
         if (!check)
             throw("[Error] Invalid json boolean; true spelled incorrectly");
         is_true_ = true;
-        byte_size_ = 4;
     }
     else if (*ptr == 'f') {
         bool check = Json::check_contains(ptr, "false");
         if (!check)
             throw("[Error] Invalid json boolean; false spelled incorrectly");
         is_true_ = false;
-        byte_size_ = 5;
     }
     else {
         throw("[Error] Invalid json boolean; true/false not found");
@@ -38,11 +36,9 @@ JsonBoolean::JsonBoolean(const char* c_str) {
 JsonBoolean::JsonBoolean(bool val) {
     if (val) {
         is_true_ = true;
-        byte_size_ = 4;
     }
     else {
         is_true_ = false;
-        byte_size_ = 5;
     }
 }
 

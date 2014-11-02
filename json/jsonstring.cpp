@@ -31,7 +31,6 @@ void JsonString::init(const char* c_str, size_t size) {
         *(json_str_ + len_ + 4) = '\0';
         str_ = NULL;
     }
-    byte_size_ = len_ + 2;
 }
 
 JsonString::JsonString(const std::string& str) {
@@ -92,7 +91,6 @@ std::string JsonString::stringify() {
 void JsonString::copy(const JsonString& src) {
     destroy();
     len_ = src.len_;
-    byte_size_ = len_ + 2;
     if (src.json_str_ != 0) {
         json_str_ = new char[len_ + 3];
         if (json_str_ == 0)

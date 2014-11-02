@@ -77,7 +77,6 @@ void JsonArray::init(const char* c_str) {
     }
     arr_ = NULL;
     size_ = 0;
-    byte_size_ = 0;
 }
 
 JsonArray::JsonArray(const std::string& str) {
@@ -89,26 +88,11 @@ JsonArray::JsonArray(const char* c_str) {
     init(c_str);
 }
 
-JsonArray::JsonArray(const JsonArray& src) {
-    arr_ = NULL;
-    size_ = 0;
-    str_ = NULL;
-    str_len_ = 0;
-    str_num_values_ = 0;
-    str_value_ptrs_ = NULL;
-    byte_size_ = 0;
+JsonArray::JsonArray(const JsonArray& src):arr_(NULL), size_(0), str_(NULL), str_len_(0), str_num_values_(0), str_value_ptrs_(NULL) {
     copy(src);
 }
 
-JsonArray::JsonArray() {
-    arr_ = NULL;
-    size_ = 0;
-    str_ = NULL;
-    str_len_ = 0;
-    str_num_values_ = 0;
-    str_value_ptrs_ = NULL;
-    byte_size_ = 0;
-}
+JsonArray::JsonArray():arr_(NULL), size_(0), str_(NULL), str_len_(0), str_num_values_(0), str_value_ptrs_(NULL) {}
 
 const JsonArray& JsonArray::operator=(const JsonArray& rhs) {
     copy(rhs);
@@ -198,19 +182,19 @@ void JsonArray::destroy() {
 
 Json& JsonArray::get(int index) {
     if (index < 0)
-        throw("[Error] Index out of JsonArray bounds 7");
+        throw("[Error] Index out of JsonArray bounds");
     if (arr_ != NULL && *(arr_ + index) != NULL) {
         if (index < size_ || index == 0) {
             return **(arr_ + index);
         }
         else
-            throw("[Error] Index out of JsonArray bounds 8");
+            throw("[Error] Index out of JsonArray bounds");
     }
     else if (str_ != NULL){
         if (index < str_num_values_) {
             ValuePointer *val_ptr = str_value_ptrs_ + index;
             if (val_ptr->len == 0)
-                throw("[Error] Invalid json string");
+                throw("[Error] Invalid json string found in JsonArray");
             char temp[val_ptr->len + 1];
             strncpy(temp, str_ + val_ptr->start, val_ptr->len);
             temp[val_ptr->len] = '\0';
@@ -249,6 +233,30 @@ Json& JsonArray::get(int index) {
     else
         throw("[Error] Index out of JsonArray bounds");
 }
+
+JsonString& JsonArray::get_string(int index) {
+    return dynamic_cast<JsonString&>(get(index));
+}
+
+JsonNumber& JsonArray::get_number(int index) {
+    return dynamic_cast<JsonNumber&>(get(index));
+}
+
+JsonBoolean& JsonArray::get_boolean(int index) {
+    return dynamic_cast<JsonBoolean&>(get(index));
+}
+
+JsonNull& JsonArray::get_null(int index) {
+    return dynamic_cast<JsonNull&>(get(index));
+}
+
+JsonArray& JsonArray::get_array(int index) {
+    return dynamic_cast<JsonArray&>(get(index));
+}
+
+/*JsonObject& JsonArray::get_object(int) {
+    return dynamic_cast<JsonObject&>(get(int));
+}*/
 
 void JsonArray::check_index_bounds(int index, bool is_insert) {
     if (index < 0)
@@ -352,12 +360,32 @@ void JsonArray::push_back(Json* json) {
         }
     }
     else {
-        Json** new_arr = (Json**)realloc(arr_, (size_ + 1)*sizeof(Json*));
-        if (new_arr == NULL)
-            throw("[Error] Unsuccessful memory reallocation for JsonArray");
-        arr_ = new_arr;
-        *(arr_ + size_) = json;
-        ++size_;
+        Json** ptr;
+        Json** end;
+        if (str_ == NULL) {
+            ptr = arr_;
+            end = ptr + size_;
+        }
+        else {
+            ptr = arr_ + str_num_values_;
+            end = ptr + size_;
+        }
+        while (ptr != end) {
+            if (*ptr == NULL)
+                break;
+            ++ptr;
+        }
+        if (ptr == end) {
+            Json** new_arr = (Json**)realloc(arr_, (size_ + 1)*sizeof(Json*));
+            if (new_arr == NULL)
+                throw("[Error] Unsuccessful memory reallocation for JsonArray");
+            arr_ = new_arr;
+            *(arr_ + size_) = json;
+            ++size_;
+        }
+        else {
+            *ptr = json; 
+        }
     }
 }
 
@@ -596,6 +624,208 @@ bool JsonArray::is_empty() {
     return false;
 }
 
+void JsonArray::resize(int new_size) {
+    if (new_size == 0) {
+        destroy();
+    }
+    else if (arr_ == NULL) {
+        if (str_ == NULL) {
+            Json** new_arr = (Json**)calloc(new_size, sizeof(Json*));
+            if (new_arr == NULL)
+                throw("[Error] Unsuccessful memory allocation for JsonArray");
+            size_ = new_size;
+            free(arr_);
+            arr_ = new_arr;
+        }
+        else {
+            if (new_size < str_num_values_) {
+                str_num_values_ = new_size;
+            }
+            else {
+                Json** new_arr = (Json**)calloc(new_size, sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                size_ = new_size;
+                free(arr_);
+                arr_ = new_arr;
+            }
+        }
+    }
+    else {
+        if (str_ == NULL) {
+            if (new_size < size_) {
+                Json** ptr = arr_ + new_size;
+                Json** end = arr_ + size_;
+                while (ptr != end) {
+                    delete *ptr;
+                    ++ptr;
+                }
+                Json** new_arr = (Json**)calloc(new_size, sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_arr, arr_, new_size*sizeof(Json*));
+                free(arr_);
+                arr_ = new_arr;
+                size_ = new_size;
+            }
+            else {
+                Json** new_arr = (Json**)calloc(new_size, sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_arr, arr_, size_*sizeof(Json*));
+                free(arr_);
+                arr_ = new_arr;
+                size_ = new_size;
+            }
+        }
+        else {
+            if (new_size < size_) {
+                Json** ptr = arr_ + new_size;
+                Json** end = arr_ + size_;
+                while (ptr != end) {
+                    delete *ptr;
+                    ++ptr;
+                }
+                Json** new_arr = (Json**)calloc(new_size, sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_arr, arr_, new_size*sizeof(Json*));
+                free(arr_);
+                arr_ = new_arr;
+                size_ = new_size;
+                if (new_size < str_num_values_)
+                    str_num_values_ = new_size;
+            }
+            else {
+                Json** new_arr = (Json**)calloc(new_size, sizeof(Json*));
+                if (new_arr == NULL)
+                    throw("[Error] Unsuccessful memory allocation for JsonArray");
+                memcpy(new_arr, arr_, size_*sizeof(Json*));
+                free(arr_);
+                arr_ = new_arr;
+                size_ = new_size;
+            }
+        }
+    }
+}
+
+void JsonArray::remove_arr(int index) {
+    Json** new_arr = (Json**)malloc((size_ - 1)*sizeof(Json*));
+    if (new_arr == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonArray");
+    if (index == 0) {
+        delete *arr_;
+        memcpy(new_arr, arr_ + 1, (size_ - 1)*sizeof(Json*));
+    }
+    else if (index == size_ - 1) {
+        delete *(arr_ + index);
+        memcpy(new_arr, arr_, (size_ - 1)*sizeof(Json*));
+    }
+    else {
+        delete *(arr_ + index);
+        memcpy(new_arr, arr_, index*sizeof(Json*));
+        memcpy(new_arr + index, arr_ + index + 1, (size_ - index)*sizeof(Json*));
+    }
+    --size_;
+    free(arr_);
+    arr_ = new_arr;
+}
+
+void JsonArray::remove_str(int index) {
+    ValuePointer* new_str_value_ptrs = new ValuePointer[str_num_values_ - 1];
+    if (new_str_value_ptrs == NULL)
+        throw("[Error] Unsuccessful memory allocation for JsonArray");
+    if (index == 0) {
+        memcpy(new_str_value_ptrs, str_value_ptrs_ + 1, (str_num_values_ - 1)*sizeof(ValuePointer));
+    }
+    else if (index == str_num_values_ - 1) {
+        memcpy(new_str_value_ptrs, str_value_ptrs_, (str_num_values_ - 1)*sizeof(ValuePointer));
+    }
+    else {
+        memcpy(new_str_value_ptrs, str_value_ptrs_, index*sizeof(ValuePointer));
+        memcpy(new_str_value_ptrs + index, str_value_ptrs_ + index + 1, (str_num_values_ - index)*sizeof(ValuePointer));
+    }
+    --str_num_values_;
+    delete [] str_value_ptrs_;
+    str_value_ptrs_ = new_str_value_ptrs;
+}
+
+void JsonArray::remove(int index) {
+    check_index_bounds(index, false);
+    if (arr_ == NULL) {
+        // str_ not null case only
+        remove_str(index);
+    }
+    else {
+        if (str_ == NULL) {
+            remove_arr(index);
+        }
+        else {
+            if (index < str_num_values_) {
+                remove_str(index);
+            }
+            remove_arr(index);
+        }
+    }
+}
+
 std::string JsonArray::stringify() {
-    return "";
+    if (arr_ == NULL) {
+        if (str_ == NULL) {
+            return "[]";    
+        }
+        else {
+            return std::string(str_);
+        }
+    }
+    else {
+        if (str_ == NULL) {
+            std::string str = "[";
+            Json** ptr = arr_;
+            Json** end = arr_ + size_;
+            Json** last = arr_ + size_ - 1;
+            while (ptr != end) {
+                if (*ptr != NULL)
+                    str += (*ptr)->stringify();
+                if (ptr != last)
+                    str += ",";
+                ++ptr;
+            }
+            str += "]";
+            return str;
+        }
+        else {
+            std::string str = "[";
+            Json** ptr = arr_;
+            Json** end = arr_ + size_;
+            Json** last = arr_ + size_ - 1;
+            ValuePointer* val_ptr = str_value_ptrs_;
+            ValuePointer* val_end = val_ptr + str_num_values_;
+            while (val_ptr != val_end) {
+                if (*ptr != NULL)
+                    str += (*ptr)->stringify();
+                else {
+                    if (val_ptr->len > 0) {
+                        char temp[val_ptr->len + 1];
+                        strncpy(temp, str_ + val_ptr->start, val_ptr->len);
+                        temp[val_ptr->len] = '\0';
+                        str += std::string(temp);
+                    }
+                }
+                if (ptr != last)
+                    str += ",";
+                ++ptr;
+                ++val_ptr;
+            }
+            while (ptr != end) {
+                if (*ptr != NULL)
+                    str += (*ptr)->stringify();
+                if (ptr != last)
+                    str += ",";
+                ++ptr;
+            }
+            str += "]";
+            return str;
+        }
+    }
 }

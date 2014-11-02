@@ -26,7 +26,6 @@ class JsonString : public Json {
         char* str_;
         char* json_str_;
         size_t len_;
-        size_t byte_size_;
 
         void copy(const JsonString& src);
         void destroy();

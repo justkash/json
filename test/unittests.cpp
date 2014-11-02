@@ -302,6 +302,45 @@ void test_insert_JsonNull_JsonArray() {
 
 //void test_insert_JsonObject_JsonArray() {}
 
+void test_resize_JsonArray() {
+    JsonArray arr("[]");
+    arr.resize(5);
+    JsonString temp("hello");
+    arr.push_back(temp);
+    assert(arr.get_string(0).get_string() == "hello");
+    JsonArray arr2("[1, 2, 3]");
+    arr2.resize(0);
+    assert(arr2.size() == 0);
+    JsonArray arr3("[\"hello\", 1, null]");
+    arr3.resize(2);
+    assert(arr3.size() == 2 && arr3.get_number(1).get_int() == 1);
+}
+
+void test_remove_JsonArray() {
+    JsonArray arr("[1, 2, 3]");
+    arr.remove(2);
+    arr.remove(0);
+    assert(arr.get_number(0).get_int() == 2);
+}
+
+void test_empty_JsonArray() {
+    JsonArray arr("[]");
+    assert(arr.is_empty() == true);
+    JsonArray arr2("[1, 2, 3]");
+    assert(arr2.is_empty() == false);
+}
+
+void test_stringify_JsonArray() {
+    JsonArray arr("[]");
+    assert(arr.stringify() == "[]");
+    JsonArray arr2("[1, null, \"hello\"]");
+    assert(arr2.stringify() == "[1, null, \"hello\"]");
+    JsonArray arr3("[1, 2, 3]");
+    JsonString str("hello");
+    arr3.push_back(str);
+    assert(arr3.stringify() == "[1, 2, 3,\"hello\"]");
+}
+
 int main() {
     clock_t start, stop;
     start = clock();
@@ -365,6 +404,10 @@ int main() {
         test_insert_JsonArray_JsonArray();
         test_insert_JsonNull_JsonArray();
         //test_insert_JsonObject_JsonArray();
+        test_resize_JsonArray();
+        test_remove_JsonArray();
+        test_empty_JsonArray();
+        test_stringify_JsonArray();
 
         puts("Tests successfully completed.");
     }
