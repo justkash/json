@@ -80,8 +80,7 @@ void JsonArray::init(const char* c_str) {
 }
 
 JsonArray::JsonArray(const std::string& str) {
-    const char* c_str = str.c_str();
-    init(c_str);
+    init(str.c_str());
 }
 
 JsonArray::JsonArray(const char* c_str) {
@@ -121,8 +120,8 @@ void JsonArray::copy(const JsonArray& src) {
                 *ptr = new JsonNumber(*((JsonNumber*)new_ptr));
             else if (typeid(*new_ptr) == typeid(JsonBoolean))
                 *ptr = new JsonBoolean(*((JsonBoolean*)new_ptr));
-            //else if (typeid(*new_ptr) == typeid(JsonObject))
-            //    *ptr = new JsonObject(*((JsonObject*)new_ptr));
+            else if (typeid(*new_ptr) == typeid(JsonObject))
+                *ptr = new JsonObject(*((JsonObject*)new_ptr));
             else if (typeid(*new_ptr) == typeid(JsonArray))
                 *ptr = new JsonArray(*((JsonArray*)new_ptr));
             else if (typeid(*new_ptr) == typeid(JsonNull))
@@ -160,6 +159,7 @@ void JsonArray::copy(const JsonArray& src) {
         str_ = NULL;
         str_len_ = 0;
         str_num_values_ = 0;
+        str_value_ptrs_ = NULL;
     }
 }
 
@@ -201,7 +201,7 @@ Json& JsonArray::get(int index) {
             Json *json_ptr = NULL;
             switch (Json::find_type(temp)) {
                 case JSONOBJECT:
-                    //json_ptr = new JsonObject(temp);
+                    json_ptr = new JsonObject(temp);
                     break;
                 case JSONSTRING:
                     json_ptr = new JsonString(temp);
@@ -254,9 +254,9 @@ JsonArray& JsonArray::get_array(int index) {
     return dynamic_cast<JsonArray&>(get(index));
 }
 
-/*JsonObject& JsonArray::get_object(int) {
-    return dynamic_cast<JsonObject&>(get(int));
-}*/
+JsonObject& JsonArray::get_object(int index) {
+    return dynamic_cast<JsonObject&>(get(index));
+}
 
 void JsonArray::check_index_bounds(int index, bool is_insert) {
     if (index < 0)
@@ -333,14 +333,14 @@ void JsonArray::set(int index, const JsonArray& json) {
         throw("[Error] Unsuccessful memory allocation for JsonArray");
     set(index, new_json);
 }
-/*
+
 void JsonArray::set(int index, const JsonObject& json) {
     check_index_bounds(index, false);
     Json* new_json = new JsonObject(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonObject");
     set(index, new_json);
-}*/
+}
 
 void JsonArray::push_back(Json* json) {
     if (arr_ == NULL) {
@@ -413,11 +413,11 @@ void JsonArray::push_back(const JsonArray& json) {
     Json* new_json = new JsonArray(json);
     push_back(new_json);
 }
-/*
+
 void JsonArray::push_back(const JsonObject& json) {
     Json* new_json = new JsonObject(json);
     push_back(new_json);
-}*/
+}
 
 void JsonArray::insert(int index, Json* json) {
     if (arr_ == NULL) {
@@ -599,13 +599,13 @@ void JsonArray::insert(int index, const JsonArray& json) {
     insert(index, new_json);
 }
 
-/*void JsonArray::insert(int index, const JsonObject& json) {
+void JsonArray::insert(int index, const JsonObject& json) {
     check_index_bounds(index, true);
     Json* new_json = new JsonObject(json);
     if (new_json == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonString");
     insert(index, new_json);
-}*/
+}
 
 size_t JsonArray::size() {
     if (arr_ == NULL) {

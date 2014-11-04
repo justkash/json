@@ -76,4 +76,19 @@ bool Json::check_contains(const char* big_str, const char* small_str) {
     return true;
 }
 
+const char* Json::find_bracket_end(const char* str) {
+    // Assume first char is '[' or '{'
+    const char* ptr = str + 1;
+    char end = *str + 2;
+    while (*ptr != '\0') {
+        if (*ptr == '{' || *ptr == '[') {
+            ptr = find_bracket_end(ptr) + 1;
+        }
+        else if (*ptr == end)
+            return ptr;
+        ++ptr;
+    }
+    return ptr;
+}
+
 Json::~Json() {}

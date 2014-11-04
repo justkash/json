@@ -14,8 +14,9 @@
 #include "jsonnumber.hpp"
 #include "jsonboolean.hpp"
 #include "jsonnull.hpp"
-//#include "jsonobject.hpp"
+#include "jsonobject.hpp"
 
+class JsonObject;
 class JsonArray : public Json {
     public:
         JsonArray();
@@ -31,25 +32,25 @@ class JsonArray : public Json {
         JsonBoolean& get_boolean(int);
         JsonNull& get_null(int);
         JsonArray& get_array(int);
-        //JsonObject& get_object(int);
+        JsonObject& get_object(int);
         void set(int, const JsonString&);
         void set(int, const JsonNumber&);
         void set(int, const JsonBoolean&);
         void set(int, const JsonNull&);
         void set(int, const JsonArray&);
-        //void set(const JsonObject&);
+        void set(int, const JsonObject&);
         void push_back(const JsonString&);
         void push_back(const JsonNumber&);
         void push_back(const JsonBoolean&);
         void push_back(const JsonNull&);
         void push_back(const JsonArray&);
-        //void push_back(const JsonObject&);
+        void push_back(const JsonObject&);
         void insert(int, const JsonString&);
         void insert(int, const JsonNumber&);
         void insert(int, const JsonBoolean&);
         void insert(int, const JsonNull&);
         void insert(int, const JsonArray&);
-        //void insert(int, const JsonObject&);
+        void insert(int, const JsonObject&);
         void remove(int);
         void resize(int);
         size_t size();
@@ -61,7 +62,7 @@ class JsonArray : public Json {
             int start;
             size_t len;
         };
-       
+
         Json** arr_;
         size_t size_;
         char* str_;
