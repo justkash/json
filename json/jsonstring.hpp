@@ -11,7 +11,12 @@
  *  2014.10.24    Akash Melethil    Created
  *
  * Notes:
- *  - This is an immutable class
+ *  - This is an immutable clas.
+ *  - This class is smart enough to recognize if the string passed into its
+ *    constructor is a json string or a normal string. It does this by looking
+ *    for double quotes, if none are found, then it assumes that it is a
+ *    regular string and that the user is using the class to create a json
+ *    string rather than to parse it.
  */
 
 #ifndef JSONSTRING_HPP
