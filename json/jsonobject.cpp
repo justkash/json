@@ -220,7 +220,7 @@ void JsonObject::init(const char* c_str) {
                 val_end = Json::find_bracket_end(next_char) + 1;
             }
             else {
-                val_end = Json::find_next_either_chars(ptr + 1, ',', '}');
+                val_end = Json::find_next_either_chars(next_char, ',', '}');
             }
             keyval_ptr->val_start = ptr - first_bracket + 1;
             keyval_ptr->val_len = val_end - ptr - 1;

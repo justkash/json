@@ -5,7 +5,7 @@
 
 #include "json.hpp"
 
-#include <ctype.h>
+#include <cctype>
 
 Json::JsonType Json::find_type(const char* str) {
 	const char* first_non_space_char = Json::find_next_non_space_char(str);

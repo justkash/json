@@ -5,8 +5,8 @@
 
 #include "jsonnumber.hpp"
 
-#include <stdlib.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cctype>
 
 void JsonNumber::init(const char* c_str) {
     char* end_ptr;

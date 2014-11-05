@@ -5,7 +5,7 @@
 
 #include "jsonstring.hpp"
 
-#include <string.h>
+#include <cstring>
 
 void JsonString::init(const char* c_str, size_t size) {
     const char* first_quote = Json::find_next_char(c_str, '"');

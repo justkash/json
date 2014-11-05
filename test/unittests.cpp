@@ -151,7 +151,7 @@ void test_empty_constructor_JsonNull() {
 
 // JsonArray
 void test_string_constructor_JsonArray() {
-    JsonArray temp("[{asd},1,12.3,\"asd\"]");
+    JsonArray temp("[{\"key\":333},1,22.2,\"asd\"]");
     assert(temp.get_string(3).get_string() == "asd");
 }
 

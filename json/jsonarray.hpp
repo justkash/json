@@ -26,7 +26,6 @@ class JsonArray : public Json {
         const JsonArray& operator=(const JsonArray&);
         virtual ~JsonArray();
         
-        Json& get(int);
         JsonString& get_string(int);
         JsonNumber& get_number(int);
         JsonBoolean& get_boolean(int);
@@ -79,6 +78,7 @@ class JsonArray : public Json {
         void insert(int, Json*);
         void remove_arr(int);
         void remove_str(int);
+        Json* get(int);
 };
 
 #endif

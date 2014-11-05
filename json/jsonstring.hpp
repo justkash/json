@@ -7,7 +7,7 @@
 #define JSONSTRING_HPP
 
 #include <string>
-#include <stddef.h>
+#include <cstddef>
 
 #include "json.hpp"
 
