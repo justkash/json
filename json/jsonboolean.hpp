@@ -1,6 +1,17 @@
 /*
- * Author: Akash Melethil
- * Last Updated: Oct/25/2014
+ * File: jsonboolean.hpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.25
+ *
+ * Description:
+ *  This class represents a json boolean.
+ *
+ * History:
+ *  2014.10.25    Akash Melethil    Created
+ *
+ * Notes:
+ *  - This is an immutable class
  */
 
 #ifndef JSONBOOLEAN_HPP

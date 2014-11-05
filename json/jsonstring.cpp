@@ -1,6 +1,17 @@
 /*
- * Author: Akash Melethil
- * Last Updated: Oct/24/2014
+ * File: jsonstring.hpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.24
+ *
+ * Description:
+ *  This class represents a json string type.
+ *
+ * History:
+ *  2014.10.24    Akash Melethil    Created
+ *
+ * Notes:
+ *  - This is an immutable class
  */
 
 #include "jsonstring.hpp"

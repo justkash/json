@@ -1,3 +1,20 @@
+/*
+ * File: jsonobject.hpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.25
+ *
+ * Description:
+ *  This class represents a json object type and is able to contain objects of Json
+ *  type
+ *
+ * History:
+ *  2014.10.25    Akash Melethil    Created
+ *
+ * Notes:
+ *  - This is a mutable class
+ */
+
 #ifndef JSONOBJECT_H
 #define JSONOBJECT_H
 

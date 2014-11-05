@@ -1,6 +1,17 @@
 /*
- * Author: Akash Melehtil
- * Last Updated: Oct/24/2014
+ * File: json.cpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.24
+ *
+ * Description:
+ *  This is an abstract class created to take advantage of polymorphism.
+ *
+ * History:
+ *  2014.10.24    Akash Melethil    Created
+ *
+ * Notes:
+ *  - None
  */
 
 #include "json.hpp"

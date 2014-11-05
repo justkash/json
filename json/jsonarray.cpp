@@ -1,5 +1,17 @@
-/* Author: Akash Melethil
- * Last Updated: Oct/26/2014
+/*
+ * File: jsonarray.cpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.26
+ *
+ * Description:
+ *  This class represents a json array and is able to contain any Json type objects
+ *
+ * History:
+ *  2014.10.26    Akash Melethil    Created
+ *
+ * Notes:
+ *  - This is a mutable class
  */
 
 #include "jsonarray.hpp"

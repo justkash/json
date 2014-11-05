@@ -1,15 +1,25 @@
 /*
- * Author: Akash Melethil
- * Last Updated: Oct/26/2014
+ * File: jsonarray.hpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.26
+ *
+ * Description:
+ *  This class represents a json array and is able to contain any Json type objects
+ *
+ * History:
+ *  2014.10.26    Akash Melethil    Created
+ *
+ * Notes:
+ *  - This is a mutable class
  */
 
 #ifndef JSONARRAY_HPP
 #define JSONARRAY_HPP
 
-#include "json.hpp"
-
 #include <string>
 
+#include "json.hpp"
 #include "jsonstring.hpp"
 #include "jsonnumber.hpp"
 #include "jsonboolean.hpp"

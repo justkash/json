@@ -1,6 +1,19 @@
 /*
- * Author: Akash Melethil
- * Last Updated: Oct/25/2014
+ * File: jsonnumber.hpp
+ *
+ * Created By: Akash Melethil, Bryce Besler
+ * Created: 2014.10.25
+ *
+ * Description:
+ *  This class represents a json number type.
+ *
+ * History:
+ *  2014.10.25    Akash Melethil    Created
+ *
+ * Notes:
+ *  - This is an immutable class
+ *  - This class is able to check whether a parsed string contained a floating point
+ *    number or an integer (is_int())
  */
 
 #ifndef JSONNUMBER_HPP
