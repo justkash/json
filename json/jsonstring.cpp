@@ -29,7 +29,7 @@ void JsonString::init(const char* c_str, size_t size) {
         // Assume that str is a regular string
         len_ = size;
         str_ = new char[len_ + 1];
-        if (str_ == 0)
+        if (str_ == NULL)
             throw("[Error] Unsuccessful memory allocation for JsonString");
         strcpy(str_, c_str);
         json_str_ = NULL;
@@ -44,7 +44,7 @@ void JsonString::init(const char* c_str, size_t size) {
         if (json_str_ == 0)
             throw("[Error] Unsuccessful memory allocation for JsonString");
         strncpy(json_str_, first_quote, len_ + 2);
-        *(json_str_ + len_ + 4) = '\0';
+        *(json_str_ + len_ + 2) = '\0';
         str_ = NULL;
     }
 }
