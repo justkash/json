@@ -42,6 +42,12 @@ void test_json_parse(std::string& str) {
     puts("PLAYER TWO TANKS:\n");
     printf("%s\n", game_state.get_array("players").get_object(1).get_array("tanks").get_object(0).get_string("id").get_string().c_str());
     printf("%s\n", game_state.get_array("players").get_object(1).get_array("tanks").get_object(1).get_string("id").get_string().c_str());
+    puts("COMM_TYPE:\n");
+    printf("%s\n", game_state.get_string("comm_type").get_string().c_str());
+    puts("TIME REMAINING:\n");
+    printf("%d\n", game_state.get_number("timeRemaining").get_int());
+    puts("TIME STAMP:\n");
+    printf("%f\n", game_state.get_number("timestamp").get_double());
 }
 
 void test_SuperEasyJSON_parse(std::string& str) {

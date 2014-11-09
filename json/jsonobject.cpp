@@ -212,7 +212,7 @@ void JsonObject::init(const char* c_str) {
         std::string str = "[Error] Invalid json object string; missing closing '}'\n" + std::string(c_str);
         throw(str.c_str());
     }
-    str_ = new char[str_len + 3];
+    str_ = (char*)malloc((str_len + 3)*sizeof(char));
     str_len_ = str_len + 2;
     if (str_ == NULL)
         throw("[Error] Unsuccessful memory allocation for JsonObject");
@@ -260,6 +260,26 @@ void JsonObject::init(const char* c_str) {
         str_ptrs_ = NULL;
         str_num_values_ = 0;
     }
+
+    /*
+    for (int i = 0; i < str_num_values_; ++i) {
+        int key_start = str_ptrs_[i].key_start;
+        size_t keylen = str_ptrs_[i].key_len;
+        int val_start = str_ptrs_[i].val_start;
+        size_t vallen = str_ptrs_[i].val_len;
+
+        char key[keylen + 1];
+        strncpy(key, str_ + key_start, keylen + 1);
+        key[keylen] = '\0';
+
+        char val[vallen + 1];
+        strncpy(val, str_ + val_start, vallen + 1);
+        val[vallen] = '\0';
+
+        printf("\nKEY: %s VALUE: %s\n",key, val);
+    }
+    */
+
     val_arr_ = NULL;
     key_arr_ = NULL;
     size_ = 0;
@@ -267,8 +287,10 @@ void JsonObject::init(const char* c_str) {
 
 Json* JsonObject::get(const char* str) {
     int index = get_key_index(str);
-    if (index < 0)
-        throw("[Error] Key not found in JsonObject");
+    if (index < 0) {
+        std::string error = "[Error] Key "+ std::string(str) +" not found in JsonObject.\n"; 
+        throw(error.c_str());
+    }
     if (val_arr_ != NULL && *(val_arr_ + index) != NULL)
         return *(val_arr_ + index);
     else {
