@@ -97,8 +97,8 @@ void JsonObject::copy(const JsonObject& src) {
                 *ptr = new JsonNumber(*((JsonNumber*)new_ptr));
             else if (typeid(*new_ptr) == typeid(JsonBoolean))
                 *ptr = new JsonBoolean(*((JsonBoolean*)new_ptr));
-            //else if (typeid(*new_ptr) == typeid(JsonObject))
-            //    *ptr = new JsonObject(*((JsonObject*)new_ptr));
+            else if (typeid(*new_ptr) == typeid(JsonObject))
+                *ptr = new JsonObject(*((JsonObject*)new_ptr));
             else if (typeid(*new_ptr) == typeid(JsonArray))
                 *ptr = new JsonArray(*((JsonArray*)new_ptr));
             else if (typeid(*new_ptr) == typeid(JsonNull))
@@ -208,8 +208,10 @@ void JsonObject::init(const char* c_str) {
         ++str_len;
         ++ptr;
     }
-    if (*ptr == '\0')
-        throw("[Error] Invalid json object string; missing closing '}'");
+    if (*ptr == '\0') {
+        std::string str = "[Error] Invalid json object string; missing closing '}'\n" + std::string(c_str);
+        throw(str.c_str());
+    }
     str_ = new char[str_len + 3];
     str_len_ = str_len + 2;
     if (str_ == NULL)

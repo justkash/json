@@ -58,8 +58,8 @@ int main() {
     clock_t start, stop;
     start = clock();
     try {
-        std::string str = get_file_contents("testdata/gamestate.json");
-        //test_json_parse(str);
+        std::string str = get_file_contents("testdata/gamestateTwo.json");
+        test_json_parse(str);
         //test_SuperEasyJSON_parse(str);
         puts("Tests successfully completed.");
     }

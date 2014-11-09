@@ -95,8 +95,9 @@ const char* Json::find_bracket_end(const char* str) {
         if (*ptr == '{' || *ptr == '[') {
             ptr = find_bracket_end(ptr) + 1;
         }
-        else if (*ptr == end)
+        if (*ptr == end) {
             return ptr;
+        }
         ++ptr;
     }
     return ptr;
