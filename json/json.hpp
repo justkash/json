@@ -18,6 +18,7 @@
 #define JSON_HPP
 
 #include <string>
+#include <stdio.h>
 
 class Json {
     public:
