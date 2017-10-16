@@ -37,7 +37,7 @@ void JsonString::init(const char* c_str, size_t size) {
     else {
         // Assume that str is a json string
         const char* second_quote = Json::find_next_char(first_quote + 1, '"');
-        if (second_quote == '\0')
+        if (*second_quote == '\0')
             throw("[Error] Invalid Json string; missing ending double quotes.");
         len_ = second_quote - first_quote - 1;
         json_str_ = new char[len_ + 3];
