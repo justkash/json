@@ -16,6 +16,7 @@
 using namespace std;
 
 // JsonString
+/*
 void test_copy_JsonString() {
     JsonString test("\"Hello world.\"");
     JsonString test2(test);
@@ -36,8 +37,9 @@ void test_constructor_JsonString() {
 void test_stringify_JsonString() {
     JsonString temp1("Hello world.");
     assert(temp1.stringify() == "\"Hello world.\"");
-}
+}*/
 
+/*
 // JsonNumber
 void test_string_constructor_double_JsonNumber() {
     JsonNumber temp("42.23");
@@ -104,8 +106,9 @@ void test_assignment_JsonNumber() {
     JsonNumber temp("42");
     JsonNumber temp2 = temp;
     assert(temp2.get_int() == 42);
-}
+}*/
 
+/*
 // JsonBoolean
 void test_string_constructor_true_JsonBoolean() {
     JsonBoolean temp("true");
@@ -269,7 +272,7 @@ void test_stringify_JsonArray() {
     JsonString str("hello");
     arr3.push_back(str);
     assert(arr3.stringify() == "[1, 2, 3,\"hello\"]");
-}
+}*/
 
 // JsonObject
 void test_string_constructor_JsonObject() {
