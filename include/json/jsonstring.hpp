@@ -25,27 +25,31 @@
 #include <string>
 #include <cstddef>
 
-#include "json.hpp"
+#include <json/json.hpp>
 
-class JsonString : public Json {
-    public:
-        JsonString(const char*);
-        JsonString(const std::string&);
-        JsonString(const JsonString&);
-        const JsonString& operator=(const JsonString&);
-        virtual ~JsonString();
+namespace json {
 
-        std::string get_string();
-        virtual std::string stringify();
+    class JsonString : public Json {
+        public:
+            JsonString(const char*);
+            JsonString(const std::string&);
+            JsonString(const JsonString&);
+            const JsonString& operator=(const JsonString&);
+            virtual ~JsonString();
 
-    private:
-        char* str_;
-        char* json_str_;
-        size_t len_;
+            std::string get_string();
+            virtual std::string stringify();
 
-        void copy(const JsonString& src);
-        void destroy();
-        void init(const char*, size_t);
-};
+        private:
+            char* str_;
+            char* json_str_;
+            size_t len_;
+
+            void copy(const JsonString& src);
+            void destroy();
+            void init(const char*, size_t);
+    };
+
+}
 
 #endif
