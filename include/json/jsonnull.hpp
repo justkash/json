@@ -18,21 +18,24 @@
 #ifndef JSONNULL_HPP
 #define JSONNULL_HPP
 
-#include "json.hpp"
-
 #include <string>
 
-class JsonNull : public Json {
-    public:
-        JsonNull();
-        JsonNull(const char*);
-        JsonNull(const std::string&);
+#include <json/json.hpp>
 
-        virtual std::string stringify();
+namespace json {
 
-    private:
+    class JsonNull : public Json {
+        public:
+            JsonNull();
+            JsonNull(const char*);
+            JsonNull(const std::string&);
 
-        void init(const char*);
-};
+            virtual std::string stringify();
 
+        private:
+
+            void init(const char*);
+    };
+
+}
 #endif

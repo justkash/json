@@ -59,7 +59,27 @@ Why write another C++ JSON library?
 4. I wanted it to be reasonably fast
 
 ## Installation
-Installing this utility is as easy as dropping the json folder into a given project.
+Adding this library to a project can be done through the CMake `FetchContent` api. For example, include the following to your relevant CMakeLists.txt file.
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    Json
+    GIT_REPOSITORY <git url>
+    GIT_TAG <git tag>
+)
+FetchContent_MakeAvailable(Json)
+
+target_link_libraries(
+    <target>
+    PRIVATE
+    Json::Json
+)
+```
+
+The api from the library can be accessed by including the header files; for example `jsonstring.hpp` can be included as shown below.
+```cpp
+#include <json/jsonstring.hpp>
+```
 
 ## Naive Benchmarks
 Although execution speed was a concern for this project, it was not the main focus. However I conducted some naive benchmarks against another very popular C++ utility and generated the results below.
